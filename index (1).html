@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Receipt - Sanskrity Film's</title>
+    <!-- html2canvas लाइब्रेरी ताकि सीधे JPG फोटो डाउनलोड हो सके -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #e4e9f0;
+            margin: 0;
+            padding: 10px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fdfdfd;
+            padding: 20px;
+            border: 3px double #1a365d;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #1a365d;
+            padding-bottom: 12px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+        .receipt-title {
+            margin: 0 0 8px 0;
+            color: #b91c1c;
+            font-size: 19px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-decoration: underline;
+        }
+        .shop-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 6px 0;
+        }
+        .camera-icon {
+            font-size: 26px;
+        }
+        .shop-name {
+            font-size: 24px;
+            font-weight: 900;
+            color: #1a365d;
+            letter-spacing: 1.2px;
+        }
+        .sub-header {
+            font-size: 12px;
+            color: #4a5568;
+            font-weight: 700;
+        }
+        .info-grid {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #cbd5e0;
+            padding: 10px 8px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            gap: 12px;
+        }
+        .info-left {
+            width: 38%;
+        }
+        .info-right {
+            width: 60%;
+        }
+        .form-group {
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #2b6cb0;
+            display: inline-block;
+            margin-bottom: 2px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 13px;
+            background: #ffffff;
+            resize: none;
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 7px;
+            text-align: left;
+            font-size: 13px;
+        }
+        th {
+            background-color: #1a365d;
+            color: white;
+            font-weight: 600;
+        }
+        .deal-sec {
+            display: flex;
+            border: 1px solid #cbd5e0;
+            margin-top: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .deal-left {
+            width: 55%;
+            padding: 10px;
+            background: #faf5ff;
+            border-right: 2px solid #cbd5e0;
+        }
+        .deal-left strong {
+            color: #7e22ce;
+        }
+        .deal-right {
+            width: 45%;
+            background: #fffbeb;
+        }
+        .deal-right table {
+            margin: 0;
+        }
+        .deal-right td {
+            border: none;
+            border-bottom: 1px solid #fde68a;
+            padding: 6px;
+        }
+        .terms {
+            font-size: 11px;
+            margin-top: 12px;
+            background: #fff1f2;
+            padding: 10px;
+            border-left: 4px solid #e11d48;
+            border-radius: 6px;
+        }
+        .terms-title {
+            text-align: center;
+            font-weight: bold;
+            color: #be123c;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+        .terms ol {
+            padding-left: 16px;
+            margin: 4px 0;
+            color: #475569;
+        }
+        .signature-sec {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #1e293b;
+            padding: 0 8px;
+        }
+        .btn-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+        .btn-action {
+            flex: 1;
+            padding: 12px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        .btn-pdf {
+            background: linear-gradient(135deg, #0d9488 0%, #1e40af 100%);
+        }
+        .btn-jpg {
+            background: linear-gradient(135deg, #d97706 0%, #b91c1c 100%);
+        }
+        @media print {
+            .btn-box {
+                display: none;
+            }
+            input, textarea {
+                border: none !important;
+                background: transparent !important;
+                height: auto !important;
+            }
+            body {
+                background: #ffffff;
+                padding: 0;
+            }
+            .container {
+                border: 2px solid #000;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="billContainer">
+    <div class="header">
+        <div class="header-top">
+            <span>Prop.- Sunny</span>
+            <span>Date:- <input type="text" id="billDate" value="11.07.2026" maxlength="10" oninput="autoFormatDate(this)" placeholder="DD.MM.YYYY" style="width:105px; display:inline-block; padding:2px; text-align:center;"></span>
+        </div>
+        <h3 class="receipt-title">Booking Receipt</h3>
+        
+        <div class="shop-brand">
+            <span class="camera-icon">📸</span>
+            <span class="shop-name">SANSKRITY FILM'S</span>
+            <span class="camera-icon">🎥</span>
+        </div>
+        
+        <div class="sub-header">MASAURHI (PATNA) | Mob:- 9523972796</div>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-left">
+            <div class="form-group">
+                <label>Receipt No.=</label> 
+                <input type="text" value="19" style="font-weight:bold;">
+            </div>
+        </div>
+        <div class="info-right">
+            <div class="form-group"><label>Customer Name :</label> <input type="text" value="Sachin kr.."></div>
+            <div class="form-group"><label>Address:</label> <input type="text" value="Taregna dih"></div>
+            <div class="form-group"><label>Mob:</label> <input type="text" value="7319655353"></div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 50%;">DATE / PROGRAM</th>
+                <th style="width: 25%;">TIME</th>
+                <th style="width: 25%;">RATE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><textarea id="progList" oninput="autoExpand(this)">16.11.2026 - Tilak
+17.11.2026 - Matkor
+18.11.2026 - mehndi
+19.11.2026 - Mandap
+20.11.2026 - Barat</textarea></td>
+                <td><textarea id="timeList" oninput="autoExpand(this)"></textarea></td>
+                <td style="vertical-align: middle; text-align: center;">
+                    <input type="text" value="As per deal" style="text-align:center; font-weight:bold;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="deal-sec">
+        <div class="deal-left">
+            <strong>DEAL DELIVERY</strong><br>
+            <textarea id="dealList" oninput="autoExpand(this)" onkeydown="handleStarsAndCapital(event, this)" style="width:100%; margin-top:4px; background:#ffffff;">★ Full HD Video Mixing & Master with 2 pen drive
+★ 250 Photo Album NTR Page Double Daker
+★ 1pc Couple Photo Calender
+★ Barat me Drone + Frame 4pc</textarea>
+        </div>
+        <div class="deal-right">
+            <table>
+                <tr>
+                    <td style="font-weight:bold; color:#1e293b;">TOTAL:-</td>
+                    <td><input type="number" id="totalAmt" value="50000" oninput="calculateDues()" style="font-weight:bold;"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold; color:#1d4ed8;">ADVANCE:-</td>
+                    <td><input type="number" id="advanceAmt" value="10000" oninput="calculateDues()" style="font-weight:bold; color:#1d4ed8;"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold; color:#e11d48;">DUES :-</td>
+                    <td><input type="number" id="duesAmt" value="40000" readonly style="color:#e11d48; font-weight:bold; font-size:15px;"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="terms">
+        <div class="terms-title">नियम एवं शर्तें</div>
+        <ol>
+            <li>एक दिन काम हो जाने के बाद कुल रकम का 75% देना होगा अन्यथा काम बीच में छोड़ दिया जाएगा।</li>
+            <li>दिनांक अदला-बदली करने पर उसका पैसा अलग से देना होगा।</li>
+            <li>काम समाप्त होने के बाद 45 दिन के अन्दर अपना फोटो & वीडियो ले लें, अन्यथा हमारी कोई जिम्मेवारी नही होगी।</li>
+            <li>साईड पर किसी प्रकार की झगड़े या बर्बादी की जिम्मेवारी पार्टी की होगी।</li>
+            <li>कुल रकम जमा होने के बाद ही फोटो & वीडियो दिया जाएगा।</li>
+            <li>कोई भी काम सुबह 10बजे से पहले नही किया जाएगा।</li>
+        </ol>
+    </div>
+
+    <div class="signature-sec">
+        <div>Customer sin.</div>
+        <div>Company seal & Signature</div>
+    </div>
+</div>
+
+<div class="container" style="background:transparent; border:none; box-shadow:none; padding:0; margin-top:10px;">
+    <div class="btn-box">
+        <button class="btn-action btn-pdf" onclick="window.print()">🖨️ Save PDF</button>
+        <button class="btn-action btn-jpg" onclick="downloadJPG()">🖼️ Download JPG</button>
+    </div>
+</div>
+
+<script>
+    // Dues Calculation Script
+    function calculateDues() {
+        let t = parseFloat(document.getElementById('totalAmt').value) || 0;
+        let advance = parseFloat(document.getElementById('advanceAmt').value) || 0;
+        let dues = t - advance;
+        document.getElementById('duesAmt').value = dues;
+    }
+
+    // Auto Star & Capital Letter on Enter in Deal Textarea
+    function handleStarsAndCapital(event, textarea) {
+        autoExpand(textarea);
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            let cursorPos = textarea.selectionStart;
+            let textBefore = textarea.value.substring(0, cursorPos);
+            let textAfter = textarea.value.substring(cursorPos);
+            // नई लाइन में स्टार के साथ कर्सर सेट करना
+            textarea.value = textBefore + "\n★ " + textAfter;
+            textarea.selectionStart = textarea.selectionEnd = cursorPos + 3;
+            autoExpand(textarea);
+        }
+    }
+
+    // टाइप करते ही पहला अक्षर कैपिटल करने का लॉजिक (Deal Box के लिए)
+    document.getElementById('dealList').addEventListener('input', function(e) {
+        let val = this.value;
+        let lines = val.split('\n');
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i].trim();
+            // अगर लाइन स्टार से शुरू होती है, तो उसके बाद का पहला अक्षर कैपिटल करें
+            if (line.startsWith('★ ')) {
+                let content = line.substring(2);
+                if (content.length > 0) {
+                    lines[i] = '★ ' + content.charAt(0).toUpperCase() + content.slice(1);
+                }
+            }
+        }
+        // कर्सर की पोजीशन बचाए रखते हुए वैल्यू अपडेट करना
+        let start = this.selectionStart;
+        this.value = lines.join('\n');
+        this.selectionStart = this.selectionEnd = start;
+    });
+
+    // Textarea Auto Height Adjust
+    function autoExpand(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = (textarea.scrollHeight) + 'px';
+    }
+
+    window.onload = function() {
+        document.querySelectorAll('textarea').forEach(ta => {
+            autoExpand(ta);
+        });
+    };
+
+    // Auto Format Date (Type 31102026 -> Automatically becomes 31.10.2026)
+    function autoFormatDate(input) {
+        let v = input.value.replace(/\D/g, '');
+        if (v.length > 2 && v.length <= 4) {
+            v = v.slice(0, 2) + '.' + v.slice(2);
+        } else if (v.length > 4) {
+            v = v.slice(0, 2) + '.' + v.slice(2, 4) + '.' + v.slice(4, 8);
+        }
+        input.value = v;
+    }
+
+    // बिल को सीधे JPG फोटो के रूप में डाउनलोड करने का फंक्शन
+    function downloadJPG() {
+        const billElement = document.getElementById('billContainer');
+        html2canvas(billElement, { scale: 2 }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'Sanskrity_Films_Bill.jpg';
+            link.href = canvas.toDataURL('image/jpeg', 1.0);
+            link.click();
+        });
+    }
+</script>
+
+</body>
+</html>
